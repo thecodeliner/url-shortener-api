@@ -30,7 +30,7 @@ https://documenter.getpostman.com/view/48401009/2sB3HtEbfW
 1. **Clone the repository**  
    Clone the project and navigate to the project directory:
    ```bash
-   git clone [https://github.com/thecodeliner/url-shortener-api](https://github.com/thecodeliner/url-shortener-api)
+   git clone https://github.com/thecodeliner/url-shortener-api
    cd laravel-url-shortener
    ```
 
