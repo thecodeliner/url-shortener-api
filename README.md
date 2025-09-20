@@ -7,54 +7,129 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# 🔗 Laravel URL Shortener API
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A simple **URL Shortener API** built with Laravel.  
+This API allows users to shorten long URLs, redirect them using the short version, and track click counts. Each shortened URL is associated with an authenticated user.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
+# Postman Documentation
+https://documenter.getpostman.com/view/48401009/2sB3HtEbfW
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## 🚀 Features
+- ✅ Shorten any valid URL  
+- ✅ Generate unique 5-character short codes  
+- ✅ Redirect to the original URL  
+- ✅ Track number of clicks for each short link  
+- ✅ User-specific URL management (requires authentication)  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 📦 Installation
+1. **Clone the repository**  
+   Clone the project and navigate to the project directory:
+   ```bash
+   git clone https://github.com/your-username/laravel-url-shortener.git
+   cd laravel-url-shortener
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Install dependencies**  
+   Install the required PHP dependencies using Composer:
+   ```bash
+   composer install
+   ```
 
-## Laravel Sponsors
+3. **Set up environment variables**  
+   Copy the `.env.example` file to `.env` and configure your environment variables:
+   ```bash
+   cp .env.example .env
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **Generate application key**  
+   Generate a unique application key for your Laravel project:
+   ```bash
+   php artisan key:generate
+   ```
 
-### Premium Partners
+5. **Run migrations**  
+   Set up the database by running the migrations:
+   ```bash
+   php artisan migrate
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+6. **Start the local development server**  
+   Launch the Laravel development server:
+   ```bash
+   php artisan serve
+   ```
+# API Documentation
 
-## Contributing
+## 🔑 Authentication
+All routes require an authenticated user (e.g., via Laravel Sanctum or Passport).  
+Ensure authentication is configured before using the API.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📡 API Endpoints
 
-## Code of Conduct
+### 1. Create a Short URL
+**POST** `/api/urls`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Request Body:**
+```json
+{
+  "original_url": "https://example.com/very/long/link"
+}
+```
 
-## Security Vulnerabilities
+**Response:**
+```json
+{
+  "original_url": "https://example.com/very/long/link",
+  "short_url": "http://your-app.test/abc12"
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Redirect to Original URL
+**GET** `/{short_url}`
+
+Redirects the user to the original URL and increments the clicks counter.
+
+**Example:**  
+`http://your-app.test/abc12` → redirects to `https://example.com/very/long/link`
+
+### 3. List User’s Short URLs
+**GET** `/api/urls`
+
+**Response:**
+```json
+{
+  "status": true,
+  "urls": [
+    {
+      "original_url": "https://example.com/very/long/link",
+      "short_url": "abc12",
+      "clicks": 5
+    }
+  ]
+}
+```
+
+## 🗄 Database Structure
+
+| Column        | Type     | Description                          |
+|---------------|----------|--------------------------------------|
+| id            | bigint   | Primary key                          |
+| user_id       | bigint   | ID of the owner (FK to users)        |
+| original_url  | text     | Original long URL                    |
+| short_url     | varchar  | Unique 5-character short code        |
+| clicks        | int      | Number of times link was visited     |
+| created_at    | datetime | Timestamp                            |
+| updated_at    | datetime | Timestamp                            |
+
+## 🛠 Tech Stack
+- **Laravel**: PHP Framework
+- **MySQL / PostgreSQL**: Database
+- **Authentication**: Laravel Sanctum or Passport
 
 ## License
 
